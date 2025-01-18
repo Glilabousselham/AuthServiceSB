@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("")
     public String index() {
-        return "Hello world (users)";
+        return "Hello world (users)! ";
     }
 
     @PostMapping("")
@@ -36,6 +36,7 @@ public class UserController {
 
         userRepository.save(user);
 
-        return "User created successfully";
+        return "User created successfully! ";
     }
+
 }
