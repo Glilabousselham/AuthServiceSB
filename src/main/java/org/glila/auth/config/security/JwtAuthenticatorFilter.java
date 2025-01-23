@@ -44,8 +44,6 @@ public class JwtAuthenticatorFilter extends OncePerRequestFilter {
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-                System.out.println("is authenticated : " + (SecurityContextHolder.getContext().getAuthentication() != null));
-
                 // inject the user details into the security context holder
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -54,14 +52,9 @@ public class JwtAuthenticatorFilter extends OncePerRequestFilter {
                 );
 
 
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                System.out.println("is authenticated : " + (SecurityContextHolder.getContext().getAuthentication() != null));
-
-
             } catch (Exception e) {
-                System.out.println("=====> auth exception : "+ e.getMessage());
                 throw new AccessDeniedException("Unauthorized request");
             }
 

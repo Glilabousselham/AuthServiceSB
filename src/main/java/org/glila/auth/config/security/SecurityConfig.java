@@ -30,7 +30,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers(HttpMethod.POST, "/users").permitAll();
                     requests.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-                    requests.requestMatchers(HttpMethod.POST, "/auth/check").permitAll();
 
                     requests.anyRequest().authenticated();
                 })

@@ -1,6 +1,8 @@
 package org.glila.auth.modules.user.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.glila.auth.modules.user.dto.UserDto;
+import org.glila.auth.modules.user.dto.UserResponseDto;
 import org.glila.auth.modules.user.entity.User;
 import org.glila.auth.modules.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -22,12 +27,18 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("")
-    public String index() {
-        return "Hello world (users)! ";
+    public ResponseEntity<List<UserResponseDto>> index() {
+
+        List<UserResponseDto> users =  this.userRepository.findAll().stream().map(user->new UserResponseDto(
+                user.getId(),
+                user.getUsername()
+        )).toList();
+
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("")
-    public String createNewUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserResponseDto> createNewUser(@RequestBody UserDto userDto) {
 
         User user = new User();
         user.setUsername(userDto.getUsername());
@@ -36,7 +47,12 @@ public class UserController {
 
         userRepository.save(user);
 
-        return "User created successfully! ";
+        UserResponseDto response = new UserResponseDto(
+                user.getId(),
+                user.getUsername()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
 }
